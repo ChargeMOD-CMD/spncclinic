@@ -1,29 +1,52 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Navbar } from "@/components/site/Navbar";
+import { Hero } from "@/components/site/Hero";
+import { Departments } from "@/components/site/Departments";
+import { Doctors } from "@/components/site/Doctors";
+import { Radiance } from "@/components/site/Radiance";
+import { AIAssessment } from "@/components/site/AIAssessment";
+import { Pharmacy } from "@/components/site/Pharmacy";
+import { BookAppointment } from "@/components/site/BookAppointment";
+import { Footer } from "@/components/site/Footer";
+import { ChatOrb } from "@/components/site/ChatOrb";
+import { Cursor } from "@/components/site/Cursor";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "SNPC Clinic & Dr. Nimmy's Radiance Skin and Hair Clinic — Wayanad" },
+      {
+        name: "description",
+        content:
+          "Multi-speciality clinic in Sulthan Bathery, Wayanad — Neurology, Dermatology, Orthopedics, Psychiatry & Pharmacy, plus Dr. Nimmy's Radiance Skin and Hair Clinic.",
+      },
+      { property: "og:title", content: "SNPC Clinic · Radiance NeuroVerse" },
+      {
+        property: "og:description",
+        content: "Advanced Care. Trusted Specialists. Radiant Health.",
+      },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="relative min-h-screen overflow-x-clip">
+      <Cursor />
+      <Navbar />
+      <main>
+        <Hero />
+        <Departments />
+        <Doctors />
+        <Radiance />
+        <AIAssessment />
+        <Pharmacy />
+        <BookAppointment />
+      </main>
+      <Footer />
+      <ChatOrb />
     </div>
   );
 }
