@@ -26,8 +26,9 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="mx-auto mt-10 max-w-7xl px-4 text-xs text-muted-foreground">
-        © {new Date().getFullYear()} SNPC Clinic · Radiance NeuroVerse
+      <div className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 text-xs text-muted-foreground">
+        <span>© {new Date().getFullYear()} SNPC Clinic · Radiance NeuroVerse</span>
+        <a href="/admin/requests" className="hover:text-foreground">Staff Login</a>
       </div>
     </footer>
   );
