@@ -1,9 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
 
 export const Route = createFileRoute("/admin/requests")({
   component: AdminRequests,
+});
+
+const DEPARTMENTS = ["Neurology", "Dermatology", "Orthopedics", "Psychiatry", "Pharmacy"];
+const TIME_SLOTS = [
+  "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM",
+  "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM",
+];
+const TODAY = new Date().toISOString().split("T")[0];
+
+const createSchema = z.object({
+  name: z.string().trim().min(2).max(120),
+  phone: z.string().trim().min(5).max(30).regex(/^[+\d\s()-]+$/, "Invalid phone"),
+  department: z.enum(DEPARTMENTS as [string, ...string[]]),
+  appointment_date: z.string().min(1, "Pick a date"),
+  appointment_time: z.string().min(1, "Pick a time slot"),
+  notes: z.string().max(500).optional(),
+  status: z.enum(["pending", "approved", "declined", "completed"]),
 });
 
 type Status = "pending" | "approved" | "declined" | "completed";
