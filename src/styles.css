@@ -253,12 +253,27 @@
 .animate-fade-up { animation: fade-up 0.8s ease-out both; }
 .animate-heartbeat { animation: heartbeat 2.2s ease-in-out infinite; }
 
-/* Fancy custom cursor on pointer devices */
+/* Fancy custom cursor on pointer devices — site only, not admin */
 @media (hover: hover) and (pointer: fine) {
-  body {
+  body:not(:has(.admin-area)) {
     cursor: none;
   }
-  a, button, [role="button"], input, textarea, select, label {
+  body:not(:has(.admin-area)) a,
+  body:not(:has(.admin-area)) button,
+  body:not(:has(.admin-area)) [role="button"],
+  body:not(:has(.admin-area)) input,
+  body:not(:has(.admin-area)) textarea,
+  body:not(:has(.admin-area)) select,
+  body:not(:has(.admin-area)) label {
     cursor: none;
+  }
+  .admin-area, .admin-area * {
+    cursor: auto;
+  }
+  .admin-area a, .admin-area button, .admin-area [role="button"], .admin-area label {
+    cursor: pointer;
+  }
+  .admin-area input, .admin-area textarea, .admin-area select {
+    cursor: text;
   }
 }
