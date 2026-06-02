@@ -91,19 +91,120 @@ function AdminRequests() {
 
   const filtered = items?.filter((a) => filter === "all" || a.status === filter) ?? [];
 
+  const [showCreate, setShowCreate] = useState(false);
+  const [cName, setCName] = useState("");
+  const [cPhone, setCPhone] = useState("");
+  const [cDept, setCDept] = useState(DEPARTMENTS[0]);
+  const [cDate, setCDate] = useState("");
+  const [cTime, setCTime] = useState("");
+  const [cNotes, setCNotes] = useState("");
+  const [cStatus, setCStatus] = useState<Status>("approved");
+  const [creating, setCreating] = useState(false);
+
+  function resetCreate() {
+    setCName(""); setCPhone(""); setCDept(DEPARTMENTS[0]);
+    setCDate(""); setCTime(""); setCNotes(""); setCStatus("approved");
+  }
+
+  async function handleCreate(e: React.FormEvent) {
+    e.preventDefault();
+    setErr(null);
+    const parsed = createSchema.safeParse({
+      name: cName, phone: cPhone, department: cDept,
+      appointment_date: cDate, appointment_time: cTime,
+      notes: cNotes || undefined, status: cStatus,
+    });
+    if (!parsed.success) { setErr(parsed.error.issues[0]?.message ?? "Invalid input"); return; }
+    setCreating(true);
+    // Insert as pending (allowed by RLS), then update to chosen status if different.
+    const { data, error } = await supabase.from("appointments").insert({
+      name: parsed.data.name, phone: parsed.data.phone, department: parsed.data.department,
+      appointment_date: parsed.data.appointment_date, appointment_time: parsed.data.appointment_time,
+      notes: parsed.data.notes ?? null,
+    }).select("id").single();
+    if (error) { setCreating(false); setErr(error.message); return; }
+    if (parsed.data.status !== "pending" && data?.id) {
+      const { error: upErr } = await supabase.from("appointments")
+        .update({ status: parsed.data.status }).eq("id", data.id);
+      if (upErr) { setCreating(false); setErr(upErr.message); return; }
+    }
+    setCreating(false);
+    resetCreate();
+    setShowCreate(false);
+  }
+
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-2xl font-semibold">Booking Requests</h1>
-        <div className="flex flex-wrap gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
           {(["all", ...STATUSES] as const).map((s) => (
             <button key={s} onClick={() => setFilter(s)}
               className={`rounded-full border px-3 py-1.5 capitalize ${filter === s ? "border-foreground bg-foreground text-background" : "border-border text-muted-foreground hover:bg-accent"}`}>
               {s}
             </button>
           ))}
+          <button onClick={() => setShowCreate((v) => !v)}
+            className="ml-2 rounded-full border border-foreground bg-foreground px-3 py-1.5 font-medium text-background hover:opacity-90">
+            {showCreate ? "Close" : "+ New booking"}
+          </button>
         </div>
       </div>
+
+      {showCreate && (
+        <form onSubmit={handleCreate} className="mt-4 grid grid-cols-1 gap-3 rounded-xl border border-border bg-card p-4 sm:grid-cols-2 lg:grid-cols-3">
+          <label className="block text-xs">
+            <span className="mb-1 block text-muted-foreground">Name</span>
+            <input required value={cName} onChange={(e) => setCName(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" placeholder="Full name" />
+          </label>
+          <label className="block text-xs">
+            <span className="mb-1 block text-muted-foreground">Phone</span>
+            <input required type="tel" value={cPhone} onChange={(e) => setCPhone(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" placeholder="+91 ..." />
+          </label>
+          <label className="block text-xs">
+            <span className="mb-1 block text-muted-foreground">Department</span>
+            <select value={cDept} onChange={(e) => setCDept(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+              {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </label>
+          <label className="block text-xs">
+            <span className="mb-1 block text-muted-foreground">Date</span>
+            <input required type="date" min={TODAY} value={cDate} onChange={(e) => setCDate(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+          </label>
+          <label className="block text-xs">
+            <span className="mb-1 block text-muted-foreground">Time slot</span>
+            <select required value={cTime} onChange={(e) => setCTime(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+              <option value="">Select slot</option>
+              {TIME_SLOTS.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+          <label className="block text-xs">
+            <span className="mb-1 block text-muted-foreground">Status</span>
+            <select value={cStatus} onChange={(e) => setCStatus(e.target.value as Status)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm capitalize">
+              {STATUSES.map((s) => <option key={s} value={s} className="capitalize">{s}</option>)}
+            </select>
+          </label>
+          <label className="block text-xs sm:col-span-2 lg:col-span-3">
+            <span className="mb-1 block text-muted-foreground">Notes (optional)</span>
+            <textarea value={cNotes} onChange={(e) => setCNotes(e.target.value)} rows={2}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+          </label>
+          <div className="sm:col-span-2 lg:col-span-3 flex justify-end gap-2">
+            <button type="button" onClick={() => { resetCreate(); setShowCreate(false); }}
+              className="rounded-md border border-border px-4 py-2 text-xs hover:bg-accent">Cancel</button>
+            <button type="submit" disabled={creating}
+              className="rounded-md bg-foreground px-4 py-2 text-xs font-medium text-background disabled:opacity-60">
+              {creating ? "Creating…" : "Create booking"}
+            </button>
+          </div>
+        </form>
+      )}
 
       {err && <div className="mt-4 rounded-md bg-red-500/10 px-3 py-2 text-xs text-red-500">{err}</div>}
 
