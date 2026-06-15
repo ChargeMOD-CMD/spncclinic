@@ -29,6 +29,7 @@ const today = new Date().toISOString().split("T")[0];
 
 export function BookAppointment() {
   const [dept, setDept] = useState(departments[1]);
+  const [doctor, setDoctor] = useState(doctorsByDept[departments[1]][0]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState("");
@@ -37,11 +38,17 @@ export function BookAppointment() {
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<{ kind: "ok" | "err"; msg: string } | null>(null);
 
+  function onDeptChange(value: string) {
+    setDept(value);
+    const list = doctorsByDept[value] ?? [];
+    setDoctor(list[0] ?? "");
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus(null);
     const parsed = schema.safeParse({
-      name, phone, department: dept,
+      name, phone, department: dept, doctor,
       appointment_date: date, appointment_time: time,
       notes: notes || undefined,
     });
@@ -50,13 +57,14 @@ export function BookAppointment() {
       return;
     }
     setSubmitting(true);
+    const composedNotes = `Doctor: ${parsed.data.doctor}${parsed.data.notes ? ` · ${parsed.data.notes}` : ""}`;
     const { error } = await supabase.from("appointments").insert({
       name: parsed.data.name,
       phone: parsed.data.phone,
       department: parsed.data.department,
       appointment_date: parsed.data.appointment_date,
       appointment_time: parsed.data.appointment_time,
-      notes: parsed.data.notes ?? null,
+      notes: composedNotes,
     });
     setSubmitting(false);
     if (error) {
