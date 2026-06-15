@@ -1,129 +1,100 @@
-import heroImg from "@/assets/hero-radiance.jpg";
+import { MedicalFloatersBackground } from "./MedicalFloaters";
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-32 pb-24 md:pt-40 md:pb-32">
-      <div className="absolute inset-0 bg-grid opacity-60" aria-hidden />
-      {/* Floating molecules */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        {Array.from({ length: 18 }).map((_, i) => (
-          <span
-            key={i}
-            className="absolute block rounded-full animate-float-y"
-            style={{
-              left: `${(i * 53) % 100}%`,
-              top: `${(i * 37) % 90}%`,
-              width: `${4 + (i % 4) * 3}px`,
-              height: `${4 + (i % 4) * 3}px`,
-              background:
-                i % 3 === 0
-                  ? "var(--radiance)"
-                  : i % 3 === 1
-                    ? "var(--accent)"
-                    : "var(--skin-glow)",
-              opacity: 0.45,
-              filter: "blur(1px)",
-              animationDelay: `${(i % 6) * 0.7}s`,
-              boxShadow: "0 0 14px currentColor",
-              color: "var(--accent)",
-            }}
-          />
-        ))}
+    <section
+      id="top"
+      className="relative flex min-h-screen items-center overflow-hidden"
+    >
+      {/* ── Full-screen SPNC Clinic background image ── */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src="/images/spnc_clinic_bg.png"
+          alt=""
+          aria-hidden
+          className="h-full w-full object-cover"
+        />
+        {/* Dark-to-transparent gradient overlay so text stays readable */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(15,23,42,0.82) 0%, rgba(15,23,42,0.55) 55%, rgba(15,23,42,0.25) 100%)",
+          }}
+        />
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 lg:grid-cols-[1.05fr_1fr]">
-        <div className="animate-fade-up">
-          <span className="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-xs text-muted-foreground">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent)] opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
-            </span>
+      <MedicalFloatersBackground />
+
+      {/* ── Content ── */}
+      <div className="relative mx-auto w-full max-w-7xl px-6 pt-28 pb-20 md:pt-36 md:pb-28">
+        <div className="max-w-2xl animate-fade-up">
+          {/* Location badge */}
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
             Sulthan Bathery · Wayanad · Kerala
-          </span>
-          <h1 className="mt-5 font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
-            Advanced healthcare,{" "}
-            <span className="text-gradient">radiant living.</span>
+          </div>
+
+          <h1 className="font-display text-5xl font-bold leading-tight tracking-tight text-white md:text-7xl">
+            SPNC Clinic
+            <span className="block text-blue-300">Trusted Healthcare</span>
+            <span className="block text-3xl font-normal text-white/80 md:text-4xl">
+              for Wayanad & Beyond.
+            </span>
           </h1>
-          <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
-            SNPC Clinic &amp; Dr. Nimmy&apos;s Radiance Skin and Hair Clinic — a
-            multi-speciality healthcare ecosystem uniting Neurology, Dermatology,
-            Orthopedics, Psychiatry, and Pharmacy under one premium roof.
+
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75">
+            SNPC Clinic & Dr. Nimmy's Radiance Skin and Hair Clinic — bringing
+            together Neurology, Dermatology, Orthopedics, Psychiatry, and Pharmacy
+            under one roof in Sulthan Bathery.
           </p>
+
+          {/* CTA buttons */}
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
               href="#book"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--neural)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] shadow-glow transition-transform hover:scale-[1.03]"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-blue-500"
             >
-              <span className="absolute inset-0 bg-white/20 opacity-0 transition-opacity group-hover:opacity-100" />
-              Book Appointment
+              Book an Appointment
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
             <a
               href="tel:+919656513550"
-              className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:text-radiance"
+              className="inline-flex items-center gap-2 rounded-lg border border-white/30 bg-white/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20"
             >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ background: "var(--radiance)" }} />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full" style={{ background: "var(--radiance)" }} />
-              </span>
-              Emergency · +91 96565 13550
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.68 2 2 0 012-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 6.4a16 16 0 006.69 6.69l1.35-1.35a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.03z" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Emergency: +91 96565 13550
             </a>
           </div>
 
-          <dl className="mt-12 grid max-w-lg grid-cols-3 gap-6">
+          {/* Stats */}
+          <div className="mt-14 flex flex-wrap gap-10 border-t border-white/15 pt-8">
             {[
-              { k: "5+", v: "Specialities" },
+              { k: "5+", v: "Medical Specialities" },
               { k: "5", v: "Senior Consultants" },
-              { k: "10:30–7:30", v: "Daily Care" },
+              { k: "Daily", v: "10:30 AM – 7:30 PM" },
             ].map((s) => (
               <div key={s.v}>
-                <dt className="font-display text-2xl font-bold text-gradient md:text-3xl">{s.k}</dt>
-                <dd className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{s.v}</dd>
+                <div className="font-display text-3xl font-bold text-blue-300">{s.k}</div>
+                <div className="mt-0.5 text-xs uppercase tracking-widest text-white/60">{s.v}</div>
               </div>
             ))}
-          </dl>
-        </div>
-
-        <div className="relative">
-          <div className="absolute -inset-10 rounded-full bg-gradient-to-tr from-[var(--accent)]/30 via-[var(--radiance)]/20 to-[var(--skin-glow)]/20 blur-3xl" aria-hidden />
-          <div className="relative">
-            <div className="absolute inset-0 -z-10 animate-spin-slow">
-              <div className="absolute inset-0 rounded-full border border-[var(--accent)]/20" />
-              <div className="absolute inset-6 rounded-full border border-[var(--radiance)]/15" />
-              <div className="absolute inset-12 rounded-full border border-[var(--skin-glow)]/15" />
-            </div>
-            <img
-              src={heroImg}
-              alt="Glowing neural network sphere merged with radiant skin halo and a futuristic medical cross"
-              width={1600}
-              height={1200}
-              className="relative w-full rounded-3xl object-cover shadow-elevated"
-              style={{ boxShadow: "var(--shadow-elevated)" }}
-            />
-
-            {/* Floating cards */}
-            <div className="absolute -left-4 top-10 hidden animate-float-y glass rounded-2xl px-4 py-3 md:flex md:items-center md:gap-3">
-              <div className="h-8 w-8 rounded-full bg-[var(--accent)]/20 grid place-items-center">
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M3 12h3l2-7 4 14 2-7h7" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
-              <div className="text-xs">
-                <div className="font-semibold">Live Vitals</div>
-                <div className="text-muted-foreground">Neural pulse · 72 bpm</div>
-              </div>
-            </div>
-            <div className="absolute -right-4 bottom-10 hidden animate-float-y glass rounded-2xl px-4 py-3 md:flex md:items-center md:gap-3" style={{ animationDelay: "1.4s" }}>
-              <div className="h-8 w-8 rounded-full grid place-items-center" style={{ background: "color-mix(in oklab, var(--radiance) 25%, transparent)" }}>
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="var(--radiance)" strokeWidth="2"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11z" strokeLinejoin="round"/></svg>
-              </div>
-              <div className="text-xs">
-                <div className="font-semibold">Radiance Scan</div>
-                <div className="text-muted-foreground">Skin glow · 94%</div>
-              </div>
-            </div>
           </div>
         </div>
+      </div>
+
+      {/* Scroll down indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/50">
+        <span className="text-xs uppercase tracking-widest">Scroll</span>
+        <span className="hero-scroll-chevron">
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
       </div>
     </section>
   );

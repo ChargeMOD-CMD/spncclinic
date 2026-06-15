@@ -44,7 +44,7 @@ function AdminLayout() {
   const onLogin = location.pathname === "/admin/login";
 
   return (
-    <div className="admin-area min-h-screen bg-background text-foreground">
+    <div className={`admin-area min-h-screen ${onLogin ? "" : "bg-background text-foreground"}`}>
       {!onLogin && (
         <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
@@ -62,9 +62,13 @@ function AdminLayout() {
           </div>
         </header>
       )}
-      <main className="mx-auto max-w-6xl px-4 py-8">
+      {onLogin ? (
         <Outlet />
-      </main>
+      ) : (
+        <main className="mx-auto max-w-6xl px-4 py-8">
+          <Outlet />
+        </main>
+      )}
     </div>
   );
 }

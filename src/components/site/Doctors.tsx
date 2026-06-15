@@ -1,59 +1,58 @@
-const doctors = [
-  { name: "Dr. Sreejith Paul", role: "Neurologist", color: "var(--neural)", avail: "Fri – Wed · Appointment" },
-  { name: "Dr. Tushar", role: "Neurologist", color: "var(--neural)", avail: "On consultation" },
-  { name: "Dr. Nimmy Thomas", role: "Dermatologist · Skin & Hair", color: "var(--radiance)", avail: "Mon – Sat" },
-  { name: "Dr. Vyshnav", role: "Orthopedic Surgeon", color: "var(--skin-glow)", avail: "Fri · 6 – 8 PM" },
-  { name: "Dr. Shafeen Hyder", role: "Psychiatrist", color: "var(--accent)", avail: "Fri · 4 – 6 PM" },
-];
+import { MedicalFloatersBackground } from "./MedicalFloaters";
 
-function initials(name: string) {
-  return name
-    .replace(/Dr\.?\s*/i, "")
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("");
-}
+const doctors = [
+  { name: "Dr. Sreejith Paul", role: "Neurologist", avail: "Fri – Wed · By Appointment", initials: "SP", bg: "#eff6ff", color: "#2563eb" },
+  { name: "Dr. Tushar", role: "Neurologist", avail: "On Consultation", initials: "T", bg: "#eff6ff", color: "#2563eb" },
+  { name: "Dr. Nimmy Thomas", role: "Dermatologist · Skin & Hair", avail: "Mon – Sat", initials: "NT", bg: "#fdf2f8", color: "#db2777" },
+  { name: "Dr. Vyshnav", role: "Orthopedic Surgeon", avail: "Fri · 6:00 – 8:00 PM", initials: "V", bg: "#fffbeb", color: "#d97706" },
+  { name: "Dr. Shafeen Hyder", role: "Psychiatrist", avail: "Fri · 4:00 – 6:00 PM", initials: "SH", bg: "#ecfeff", color: "#0891b2" },
+];
 
 export function Doctors() {
   return (
-    <section id="doctors" className="relative py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+    <section id="doctors" className="relative py-20 md:py-28 bg-white overflow-hidden">
+      <MedicalFloatersBackground />
+      <div className="relative mx-auto max-w-7xl px-6">
+        {/* Header */}
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end mb-10">
           <div>
-            <span className="text-xs uppercase tracking-[0.3em] text-accent">Meet Our Specialists</span>
-            <h2 className="mt-3 max-w-2xl font-display text-4xl font-bold md:text-5xl">
-              Trusted hands.{" "}
-              <span className="text-gradient">Modern minds.</span>
+            <span className="text-xs font-semibold uppercase tracking-widest text-blue-700">Our Specialists</span>
+            <h2 className="mt-3 font-display text-3xl font-bold text-slate-900 md:text-4xl">
+              Meet Our Consulting Doctors
             </h2>
           </div>
-          <p className="max-w-md text-sm text-muted-foreground">
+          <p className="max-w-md text-sm text-slate-500">
             A senior team of consultants across neurology, dermatology, orthopedics
-            and psychiatry — collaborating under one roof in Sulthan Bathery.
+            and psychiatry — all under one roof in Sulthan Bathery.
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {/* Cards */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {doctors.map((d) => (
             <article
               key={d.name}
-              className="group relative overflow-hidden rounded-3xl glass p-5 transition-all hover:-translate-y-1"
+              className="flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
             >
+              {/* Avatar */}
               <div
-                className="absolute -top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-60 blur-3xl transition-opacity group-hover:opacity-100"
-                style={{ background: `color-mix(in oklab, ${d.color} 35%, transparent)` }}
-                aria-hidden
-              />
-              <div className="relative mx-auto grid h-24 w-24 place-items-center rounded-full" style={{ background: `color-mix(in oklab, ${d.color} 18%, transparent)`, border: `1px solid color-mix(in oklab, ${d.color} 40%, transparent)` }}>
-                <span className="font-display text-2xl font-bold" style={{ color: d.color }}>{initials(d.name)}</span>
-                <span className="absolute inset-0 rounded-full border animate-pulse-ring" style={{ borderColor: d.color }} aria-hidden />
+                className="grid h-20 w-20 place-items-center rounded-full text-2xl font-bold font-display"
+                style={{ background: d.bg, color: d.color }}
+              >
+                {d.initials}
               </div>
-              <div className="relative mt-5 text-center">
-                <h3 className="font-display text-base font-semibold">{d.name}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">{d.role}</p>
-                <div className="mt-4 inline-flex rounded-full glass px-3 py-1 text-[11px] text-foreground/80">
-                  {d.avail}
-                </div>
+
+              <h3 className="mt-4 font-display text-base font-semibold text-slate-900">{d.name}</h3>
+              <p className="mt-1 text-xs text-slate-500">{d.role}</p>
+
+              <div
+                className="mt-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+                style={{ background: d.bg, color: d.color }}
+              >
+                <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                {d.avail}
               </div>
             </article>
           ))}
