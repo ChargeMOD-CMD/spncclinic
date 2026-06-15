@@ -3,21 +3,14 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 
 const departments = ["Neurology", "Dermatology", "Orthopedics", "Psychiatry", "Pharmacy", "Any Specialist"];
-const doctorsByDept: Record<string, string[]> = {
-  Neurology: ["Dr. Sreejith Paul", "Dr. Tushar"],
-  Dermatology: ["Dr. Nimmy Thomas (Skin & Hair)"],
-  Orthopedics: ["Dr. Vyshnav"],
-  Psychiatry: ["Dr. Shafeen Hyder"],
-  Pharmacy: ["Pharmacy Desk"],
-  "Any Specialist": [
-    "Dr. Sreejith Paul — Neurologist",
-    "Dr. Tushar — Neurologist",
-    "Dr. Nimmy Thomas — Dermatologist (Skin & Hair)",
-    "Dr. Vyshnav — Orthopedic Surgeon",
-    "Dr. Shafeen Hyder — Psychiatrist",
-    "Pharmacy Desk",
-  ],
-};
+const allDoctors = [
+  "Dr. Sreejith Paul — Neurologist",
+  "Dr. Tushar — Neurologist",
+  "Dr. Nimmy Thomas — Dermatologist (Skin & Hair)",
+  "Dr. Vyshnav — Orthopedic Surgeon",
+  "Dr. Shafeen Hyder — Psychiatrist",
+  "Pharmacy Desk",
+];
 const timeSlots = [
   "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM",
   "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM",
