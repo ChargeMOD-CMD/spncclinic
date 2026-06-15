@@ -26,14 +26,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build static site
         run: npm run build
@@ -44,7 +44,10 @@ jobs:
           SUPABASE_URL: "https://vmpfzcrxwwrrtbdeozdm.supabase.co"
           SUPABASE_PUBLISHABLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtcGZ6Y3J4d3dycnRiZGVvemRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyODcwMDcsImV4cCI6MjA5NTg2MzAwN30.vdBpsP72UPSCjkkWKKdYW3nyilsPyDuyZcAvL03nmDI"
 
-      - name: Add SPA fallback
+      - name: List build output
+        run: ls -la dist/client/
+
+      - name: Add SPA fallback (404.html)
         run: cp dist/client/index.html dist/client/404.html
 
       - name: Upload Pages artifact
