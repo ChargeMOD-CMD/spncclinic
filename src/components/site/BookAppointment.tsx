@@ -41,8 +41,6 @@ export function BookAppointment() {
 
   function onDeptChange(value: string) {
     setDept(value);
-    const list = doctorsByDept[value] ?? [];
-    setDoctor(list[0] ?? "");
   }
 
   async function handleSubmit(e: React.FormEvent) {
