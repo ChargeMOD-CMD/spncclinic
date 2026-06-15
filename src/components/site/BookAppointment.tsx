@@ -2,7 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 
-const departments = ["Neurology", "Dermatology", "Orthopedics", "Psychiatry", "Pharmacy"];
+const departments = ["Neurology", "Dermatology", "Orthopedics", "Psychiatry", "Pharmacy", "Any Specialist"];
 const doctorsByDept: Record<string, string[]> = {
   Neurology: ["Dr. Sreejith Paul", "Dr. Tushar"],
   Dermatology: ["Dr. Nimmy Thomas (Skin & Hair)"],
