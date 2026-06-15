@@ -18,9 +18,10 @@ function AdminLogin() {
     e.preventDefault();
     setErr(null);
     setLoading(true);
+    const redirectTo = new URL(`${import.meta.env.BASE_URL}admin/requests`, window.location.origin).toString();
     const fn = mode === "signin"
       ? supabase.auth.signInWithPassword({ email, password })
-      : supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/admin/requests" } });
+      : supabase.auth.signUp({ email, password, options: { emailRedirectTo: redirectTo } });
     const { error } = await fn;
     setLoading(false);
     if (error) { setErr(error.message); return; }
