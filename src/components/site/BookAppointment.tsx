@@ -3,21 +3,14 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 
 const departments = ["Neurology", "Dermatology", "Orthopedics", "Psychiatry", "Pharmacy", "Any Specialist"];
-const doctorsByDept: Record<string, string[]> = {
-  Neurology: ["Dr. Sreejith Paul", "Dr. Tushar"],
-  Dermatology: ["Dr. Nimmy Thomas (Skin & Hair)"],
-  Orthopedics: ["Dr. Vyshnav"],
-  Psychiatry: ["Dr. Shafeen Hyder"],
-  Pharmacy: ["Pharmacy Desk"],
-  "Any Specialist": [
-    "Dr. Sreejith Paul — Neurologist",
-    "Dr. Tushar — Neurologist",
-    "Dr. Nimmy Thomas — Dermatologist (Skin & Hair)",
-    "Dr. Vyshnav — Orthopedic Surgeon",
-    "Dr. Shafeen Hyder — Psychiatrist",
-    "Pharmacy Desk",
-  ],
-};
+const allDoctors = [
+  "Dr. Sreejith Paul — Neurologist",
+  "Dr. Tushar — Neurologist",
+  "Dr. Nimmy Thomas — Dermatologist (Skin & Hair)",
+  "Dr. Vyshnav — Orthopedic Surgeon",
+  "Dr. Shafeen Hyder — Psychiatrist",
+  "Pharmacy Desk",
+];
 const timeSlots = [
   "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM",
   "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM",
@@ -37,7 +30,7 @@ const today = new Date().toISOString().split("T")[0];
 
 export function BookAppointment() {
   const [dept, setDept] = useState(departments[1]);
-  const [doctor, setDoctor] = useState(doctorsByDept[departments[1]][0]);
+  const [doctor, setDoctor] = useState(allDoctors[0]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState("");
@@ -48,8 +41,6 @@ export function BookAppointment() {
 
   function onDeptChange(value: string) {
     setDept(value);
-    const list = doctorsByDept[value] ?? [];
-    setDoctor(list[0] ?? "");
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -135,7 +126,7 @@ export function BookAppointment() {
                   <span className="mb-1.5 block text-xs uppercase tracking-wider text-muted-foreground">Doctor</span>
                   <select required value={doctor} onChange={(e) => setDoctor(e.target.value)}
                     className="w-full rounded-xl border border-[var(--input)] bg-[color-mix(in_oklab,var(--background)_60%,transparent)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]">
-                    {(doctorsByDept[dept] ?? []).map((d) => (<option key={d} value={d}>{d}</option>))}
+                    {allDoctors.map((d) => (<option key={d} value={d}>{d}</option>))}
                   </select>
                 </label>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
