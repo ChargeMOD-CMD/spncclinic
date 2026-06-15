@@ -20,6 +20,9 @@ export default defineConfig({
       ? {
           enabled: true,
           maskPath: "/",
+          prerender: {
+            outputPath: "/",
+          },
         }
       : undefined,
   },
