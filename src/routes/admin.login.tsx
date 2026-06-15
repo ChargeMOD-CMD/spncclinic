@@ -31,6 +31,8 @@ const FLOATERS = [
   { icon: 2, top: "40%",  left: "92%",  size: 20, delay: "1.5s", dur: "15s" },
 ];
 
+const base = import.meta.env.BASE_URL ?? "/";
+
 function AdminLogin() {
   const navigate = useNavigate();
   const [email, setEmail]       = useState("");
@@ -61,7 +63,7 @@ function AdminLogin() {
         aria-hidden="true"
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage: "url('/images/clinic_login_bg.png')",
+          backgroundImage: `url('${base}images/clinic_login_bg.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           animation: "kenBurns 20s ease-in-out infinite alternate",
@@ -190,7 +192,7 @@ function AdminLogin() {
             }}
           >
             <img
-              src="/images/logo.png"
+              src={`${base}images/logo.png`}
               alt="SPNC Clinic"
               className="h-11 w-auto object-contain"
             />

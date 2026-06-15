@@ -1,5 +1,7 @@
 import { MedicalFloatersBackground } from "./MedicalFloaters";
 
+const base = import.meta.env.BASE_URL ?? "/";
+
 export function Hero() {
   return (
     <section
@@ -9,7 +11,7 @@ export function Hero() {
       {/* ── Full-screen SPNC Clinic background image ── */}
       <div className="absolute inset-0 -z-10">
         <img
-          src="/images/spnc_clinic_bg.png"
+          src={`${base}images/spnc_clinic_bg.png`}
           alt=""
           aria-hidden
           className="h-full w-full object-cover"

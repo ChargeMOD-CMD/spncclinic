@@ -1,3 +1,5 @@
+const base = import.meta.env.BASE_URL ?? "/";
+
 export function Logo({
   className = "",
   dark = false,
@@ -8,7 +10,7 @@ export function Logo({
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
       <img
-        src="/images/logo.png"
+        src={`${base}images/logo.png`}
         alt="SPNC Clinic Logo"
         className="h-12 w-auto object-contain drop-shadow-sm"
       />
