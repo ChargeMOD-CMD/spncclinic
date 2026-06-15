@@ -3,6 +3,13 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 
 const departments = ["Neurology", "Dermatology", "Orthopedics", "Psychiatry", "Pharmacy"];
+const doctorsByDept: Record<string, string[]> = {
+  Neurology: ["Dr. Sreejith Paul", "Dr. Tushar"],
+  Dermatology: ["Dr. Nimmy Thomas"],
+  Orthopedics: ["Dr. Vyshnav"],
+  Psychiatry: ["Dr. Shafeen Hyder"],
+  Pharmacy: ["Pharmacy Desk"],
+};
 const timeSlots = [
   "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM",
   "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM",
@@ -12,6 +19,7 @@ const schema = z.object({
   name: z.string().trim().min(2).max(120),
   phone: z.string().trim().min(5).max(30).regex(/^[+\d\s()-]+$/, "Invalid phone"),
   department: z.enum(departments as [string, ...string[]]),
+  doctor: z.string().trim().min(2, "Pick a doctor"),
   appointment_date: z.string().min(1, "Pick a date"),
   appointment_time: z.string().min(1, "Pick a time slot"),
   notes: z.string().max(500).optional(),
