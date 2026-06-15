@@ -126,7 +126,7 @@ export function BookAppointment() {
                   <span className="mb-1.5 block text-xs uppercase tracking-wider text-muted-foreground">Doctor</span>
                   <select required value={doctor} onChange={(e) => setDoctor(e.target.value)}
                     className="w-full rounded-xl border border-[var(--input)] bg-[color-mix(in_oklab,var(--background)_60%,transparent)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]">
-                    {(doctorsByDept[dept] ?? []).map((d) => (<option key={d} value={d}>{d}</option>))}
+                    {allDoctors.map((d) => (<option key={d} value={d}>{d}</option>))}
                   </select>
                 </label>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
