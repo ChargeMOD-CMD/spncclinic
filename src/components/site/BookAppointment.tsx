@@ -3,6 +3,13 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 
 const departments = ["Neurology", "Dermatology", "Orthopedics", "Psychiatry", "Pharmacy"];
+const doctorsByDept: Record<string, string[]> = {
+  Neurology: ["Dr. Sreejith Paul", "Dr. Tushar"],
+  Dermatology: ["Dr. Nimmy Thomas"],
+  Orthopedics: ["Dr. Vyshnav"],
+  Psychiatry: ["Dr. Shafeen Hyder"],
+  Pharmacy: ["Pharmacy Desk"],
+};
 const timeSlots = [
   "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM",
   "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM",
@@ -12,6 +19,7 @@ const schema = z.object({
   name: z.string().trim().min(2).max(120),
   phone: z.string().trim().min(5).max(30).regex(/^[+\d\s()-]+$/, "Invalid phone"),
   department: z.enum(departments as [string, ...string[]]),
+  doctor: z.string().trim().min(2, "Pick a doctor"),
   appointment_date: z.string().min(1, "Pick a date"),
   appointment_time: z.string().min(1, "Pick a time slot"),
   notes: z.string().max(500).optional(),
@@ -21,6 +29,7 @@ const today = new Date().toISOString().split("T")[0];
 
 export function BookAppointment() {
   const [dept, setDept] = useState(departments[1]);
+  const [doctor, setDoctor] = useState(doctorsByDept[departments[1]][0]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState("");
@@ -29,11 +38,17 @@ export function BookAppointment() {
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<{ kind: "ok" | "err"; msg: string } | null>(null);
 
+  function onDeptChange(value: string) {
+    setDept(value);
+    const list = doctorsByDept[value] ?? [];
+    setDoctor(list[0] ?? "");
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus(null);
     const parsed = schema.safeParse({
-      name, phone, department: dept,
+      name, phone, department: dept, doctor,
       appointment_date: date, appointment_time: time,
       notes: notes || undefined,
     });
@@ -42,13 +57,14 @@ export function BookAppointment() {
       return;
     }
     setSubmitting(true);
+    const composedNotes = `Doctor: ${parsed.data.doctor}${parsed.data.notes ? ` · ${parsed.data.notes}` : ""}`;
     const { error } = await supabase.from("appointments").insert({
       name: parsed.data.name,
       phone: parsed.data.phone,
       department: parsed.data.department,
       appointment_date: parsed.data.appointment_date,
       appointment_time: parsed.data.appointment_time,
-      notes: parsed.data.notes ?? null,
+      notes: composedNotes,
     });
     setSubmitting(false);
     if (error) {
@@ -102,9 +118,16 @@ export function BookAppointment() {
                 </label>
                 <label className="block">
                   <span className="mb-1.5 block text-xs uppercase tracking-wider text-muted-foreground">Department</span>
-                  <select value={dept} onChange={(e) => setDept(e.target.value)}
+                  <select value={dept} onChange={(e) => onDeptChange(e.target.value)}
                     className="w-full rounded-xl border border-[var(--input)] bg-[color-mix(in_oklab,var(--background)_60%,transparent)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]">
                     {departments.map((d) => (<option key={d} value={d}>{d}</option>))}
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="mb-1.5 block text-xs uppercase tracking-wider text-muted-foreground">Doctor</span>
+                  <select required value={doctor} onChange={(e) => setDoctor(e.target.value)}
+                    className="w-full rounded-xl border border-[var(--input)] bg-[color-mix(in_oklab,var(--background)_60%,transparent)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]">
+                    {(doctorsByDept[dept] ?? []).map((d) => (<option key={d} value={d}>{d}</option>))}
                   </select>
                 </label>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
