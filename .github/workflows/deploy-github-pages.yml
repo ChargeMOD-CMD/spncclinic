@@ -39,6 +39,10 @@ jobs:
         run: npm run build
         env:
           GITHUB_PAGES: "true"
+          VITE_SUPABASE_URL: "https://vmpfzcrxwwrrtbdeozdm.supabase.co"
+          VITE_SUPABASE_PUBLISHABLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtcGZ6Y3J4d3dycnRiZGVvemRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyODcwMDcsImV4cCI6MjA5NTg2MzAwN30.vdBpsP72UPSCjkkWKKdYW3nyilsPyDuyZcAvL03nmDI"
+          SUPABASE_URL: "https://vmpfzcrxwwrrtbdeozdm.supabase.co"
+          SUPABASE_PUBLISHABLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtcGZ6Y3J4d3dycnRiZGVvemRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyODcwMDcsImV4cCI6MjA5NTg2MzAwN30.vdBpsP72UPSCjkkWKKdYW3nyilsPyDuyZcAvL03nmDI"
 
       - name: Add SPA fallback
         run: cp dist/client/index.html dist/client/404.html
