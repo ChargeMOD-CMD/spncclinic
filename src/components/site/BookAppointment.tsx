@@ -30,7 +30,7 @@ const today = new Date().toISOString().split("T")[0];
 
 export function BookAppointment() {
   const [dept, setDept] = useState(departments[1]);
-  const [doctor, setDoctor] = useState(doctorsByDept[departments[1]][0]);
+  const [doctor, setDoctor] = useState(allDoctors[0]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState("");
