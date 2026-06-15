@@ -47,8 +47,11 @@ jobs:
       - name: List build output
         run: ls -la dist/client/
 
-      - name: Add SPA fallback (404.html)
-        run: cp dist/client/index.html dist/client/404.html
+      - name: Add SPA fallback (index.html & 404.html)
+        run: |
+          if [ -f dist/client/_shell.html ]; then cp dist/client/_shell.html dist/client/index.html; fi
+          if [ -f dist/client/.html ]; then cp dist/client/.html dist/client/index.html; fi
+          cp dist/client/index.html dist/client/404.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
