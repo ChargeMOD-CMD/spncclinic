@@ -20,6 +20,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminRequestsRouteImport } from './routes/admin.requests'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 
 const RadianceRoute = RadianceRouteImport.update({
   id: '/radiance',
@@ -76,6 +77,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/doctors': typeof DoctorsRoute
   '/pharmacy': typeof PharmacyRoute
   '/radiance': typeof RadianceRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/requests': typeof AdminRequestsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/doctors': typeof DoctorsRoute
   '/pharmacy': typeof PharmacyRoute
   '/radiance': typeof RadianceRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/requests': typeof AdminRequestsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/doctors': typeof DoctorsRoute
   '/pharmacy': typeof PharmacyRoute
   '/radiance': typeof RadianceRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/requests': typeof AdminRequestsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/doctors'
     | '/pharmacy'
     | '/radiance'
+    | '/admin/dashboard'
     | '/admin/login'
     | '/admin/requests'
     | '/admin/users'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/doctors'
     | '/pharmacy'
     | '/radiance'
+    | '/admin/dashboard'
     | '/admin/login'
     | '/admin/requests'
     | '/admin/users'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/doctors'
     | '/pharmacy'
     | '/radiance'
+    | '/admin/dashboard'
     | '/admin/login'
     | '/admin/requests'
     | '/admin/users'
@@ -246,10 +258,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminDashboardRoute: typeof AdminDashboardRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminRequestsRoute: typeof AdminRequestsRoute
   AdminUsersRoute: typeof AdminUsersRoute
@@ -257,6 +277,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminDashboardRoute: AdminDashboardRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminRequestsRoute: AdminRequestsRoute,
   AdminUsersRoute: AdminUsersRoute,

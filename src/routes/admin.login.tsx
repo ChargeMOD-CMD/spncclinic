@@ -44,15 +44,10 @@ function AdminLogin() {
     e.preventDefault();
     setErr(null);
     setLoading(true);
-    const redirectTo = new URL(
-      `${import.meta.env.BASE_URL}admin/requests`,
-      window.location.origin
-    ).toString();
-    const fn = supabase.auth.signInWithPassword({ email, password });
-    const { error } = await fn;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) { setErr(error.message); return; }
-    navigate({ to: "/admin/requests", replace: true });
+    navigate({ to: "/admin/dashboard", replace: true });
   }
 
   return (
